@@ -29,7 +29,7 @@ public class GameFrame extends JFrame {
 	public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
 
 	//uncomment all /*...*/ in the class for using Tank icon instead of a simple circle
-	/*private BufferedImage image;*/ 
+	private BufferedImage image;
 
 	private long lastRender;
 	private ArrayList<Float> fpsHistory;
@@ -43,12 +43,12 @@ public class GameFrame extends JFrame {
 		lastRender = -1;
 		fpsHistory = new ArrayList<>(100);
 
-	/*	try{
-			image = ImageIO.read(new File("Icon.png"));
+		try{
+			image = ImageIO.read(new File("Paper-Mario-icon.png"));
 		}
 		catch(IOException e){
 			System.out.println(e);
-		}*/
+		}
 	}
 	
 	/**
@@ -99,13 +99,14 @@ public class GameFrame extends JFrame {
 	 */
 	private void doRendering(Graphics2D g2d, GameState state) {
 		// Draw background
-		g2d.setColor(Color.GRAY);
+		g2d.setColor(new Color(180, 250, 255));
 		g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 		// Draw ball
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(Color.RED);
 		g2d.fillOval(state.locX, state.locY, state.diam, state.diam);
 
-/*		g2d.drawImage(image,state.locX,state.locY,null);*/
+	//	g2d.(image,state.locX,state.locY,null);
+
 
 
 		// Print FPS info

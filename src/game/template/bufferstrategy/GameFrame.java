@@ -1,8 +1,7 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
-import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
@@ -59,6 +58,7 @@ public class GameFrame extends JFrame {
 		}
 		// Display the buffer
 		bufferStrategy.show();
+
 		// Tell the system to do the drawing NOW;
 		// otherwise it can take a few extra ms and will feel jerky!
 		Toolkit.getDefaultToolkit().sync();
