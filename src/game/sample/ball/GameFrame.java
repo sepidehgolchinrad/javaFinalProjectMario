@@ -119,6 +119,7 @@ public class GameFrame extends JFrame {
 			float avg = 0.0f;
 			for (float fps : fpsHistory) {
 				avg += fps;
+
 			}
 			avg /= fpsHistory.size();
 			String str = String.format("Average FPS = %.1f , Last Interval = %d ms",
@@ -145,5 +146,7 @@ public class GameFrame extends JFrame {
 			g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, GAME_HEIGHT / 2);
 		}
 	}
-	
+
+
+
 }

@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -19,7 +20,8 @@ public class GameState {
 	
 	public int locX, locY, diam;
 	public boolean gameOver;
-	
+	boolean jumpFlag;
+
 	private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
 	private boolean mousePress;
 	private int mouseX, mouseY;	
@@ -27,8 +29,8 @@ public class GameState {
 	private MouseHandler mouseHandler;
 	
 	public GameState() {
-		locX = 100;
-		locY = 100;
+		locX = 300;
+		locY = 500;
 		diam = 32;
 		gameOver = false;
 		//
@@ -48,19 +50,39 @@ public class GameState {
 	/**
 	 * The method which updates the game state.
 	 */
-	public void update() {
+	public void update() throws InterruptedException {
 		if (mousePress) {
 			locY = mouseY - diam / 2;
 			locX = mouseX - diam / 2;
 		}
-		if (keyUP)
-			locY -= 8;
-		if (keyDOWN)
-			locY += 8;
+		if (keyUP) {
+//			locY -= 20;
+//			TimeUnit.SECONDS.sleep(1);
+//			for (int i=0; i<5;i++){
+//				locY -=5;
+//			}
+
+//			TimeUnit.SECONDS.sleep(1);
+
+//			for (int i=0; i<5;i++){
+//				locY +=5;
+//			}
+//			TimeUnit.SECONDS.sleep(1);
+
+//			for(int i=0; i<90; i++){
+//				locY++;
+//				TimeUnit.SECONDS.sleep(1);
+//			}
+			//locY += 100;
+
+		}
+		//if (keyDOWN)
+		//	locY += 8;
 		if (keyLEFT)
 			locX -= 8;
 		if (keyRIGHT)
 			locX += 8;
+
 
 		locX = Math.max(locX, 0);
 		locX = Math.min(locX, GameFrame.GAME_WIDTH - diam);
@@ -90,16 +112,41 @@ public class GameState {
 		public void keyPressed(KeyEvent e) {
 			switch (e.getKeyCode())
 			{
-				case KeyEvent.VK_UP:
+				case KeyEvent.VK_W:
 					keyUP = true;
+					jumpFlag = true;
+					if (jumpFlag) {
+						jumpFlag = false;
+						for (int i = 0; i < 20; i++) {
+							locY -= 5;
+							try {
+								Thread.sleep(5);
+							} catch (InterruptedException ex) {
+								ex.printStackTrace();
+							}
+						}
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException ex) {
+							ex.printStackTrace();
+						}
+						for (int i = 0; i < 20; i++) {
+							locY += 5;
+							try {
+								Thread.sleep(5);
+							} catch (InterruptedException ex) {
+								ex.printStackTrace();
+							}
+						}
+					}
 					break;
 				case KeyEvent.VK_DOWN:
 					keyDOWN = true;
 					break;
-				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_A:
 					keyLEFT = true;
 					break;
-				case KeyEvent.VK_RIGHT:
+				case KeyEvent.VK_D:
 					keyRIGHT = true;
 					break;
 				case KeyEvent.VK_ESCAPE:
@@ -112,16 +159,16 @@ public class GameState {
 		public void keyReleased(KeyEvent e) {
 			switch (e.getKeyCode())
 			{
-				case KeyEvent.VK_UP:
+				case KeyEvent.VK_W:
 					keyUP = false;
 					break;
 				case KeyEvent.VK_DOWN:
 					keyDOWN = false;
 					break;
-				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_A:
 					keyLEFT = false;
 					break;
-				case KeyEvent.VK_RIGHT:
+				case KeyEvent.VK_D:
 					keyRIGHT = false;
 					break;
 			}
