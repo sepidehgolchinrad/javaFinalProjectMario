@@ -4,8 +4,11 @@ import java.awt.*;
 
 public class Hedgehog extends Enemy implements Runnable{
     public int direction;
-    public Hedgehog(int locationX, int locationY, int direction) {
-        super(locationX, locationY, 50, 50);
+    private int width, height;
+    public Hedgehog(int locationX, int locationY, int width, int height, int direction) {
+        super(locationX, locationY, width, height);
+        this.width = width;
+        this.height = height;
         this.direction = direction;
     }
 
@@ -16,7 +19,7 @@ public class Hedgehog extends Enemy implements Runnable{
                return;
            }
            try {
-               setLocationX(getLocationX() - 5*direction);
+               setLocationX(getLocationX() - width / 10 * direction);
                Thread.sleep(100);
            } catch (InterruptedException e) {
                e.printStackTrace();
@@ -27,9 +30,9 @@ public class Hedgehog extends Enemy implements Runnable{
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.RED);
-        g2d.drawRect(getLocationX(), getLocationY(), 50, 50);
+        g2d.drawRect(getLocationX(), getLocationY(), width, height);
         g2d.setColor(Color.RED);
-        g2d.fillRect(getLocationX(), getLocationY(), 50, 50);
+        g2d.fillRect(getLocationX(), getLocationY(), width, height);
 
     }
 }

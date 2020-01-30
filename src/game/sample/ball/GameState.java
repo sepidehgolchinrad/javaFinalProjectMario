@@ -12,7 +12,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -39,34 +43,42 @@ public class GameState {
 	private Player player;
 	private Gravity gravity;
 	private long lastJump;
+	private int mapColumn;
+	private ArrayList<String>map;
+	private int boxH, boxW;
 
 	public Player getPlayer() {
 		return player;
 	}
 
-	public GameState() {
+	public GameState() throws FileNotFoundException {
 		gameObjects = new ArrayList<GameObject>();
 		walls = new ArrayList<Wall>();
 		coins = new ArrayList<Coin>();
 		bullets = new ArrayList<Bullet>();
 		enemies = new ArrayList<Enemy>();
+		map = new ArrayList<String>();
+		mapColumn = 10;
+		boxW = GameFrame.GAME_WIDTH / 20;
+		boxH = GameFrame.GAME_HEIGHT / 10;
+		initObjects();
 
-		walls.add(new StoneWall(0,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH-500,190));
-		walls.add(new StoneWall(GameFrame.GAME_WIDTH-400,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH,190));
-		walls.add((new StoneWall(400,500,100,50)));
-		walls.add((new BrickWall(450,440,100,30)));
+//		walls.add(new StoneWall(0,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH-500,190));
+//		walls.add(new StoneWall(GameFrame.GAME_WIDTH-400,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH,190));
+//		walls.add((new StoneWall(400,500,100,50)));
+//		walls.add((new BrickWall(450,440,100,30)));
 
 
 
-		Hedgehog hedgehog = new Hedgehog(400,480, +1);
-		enemies.add(hedgehog);
-		ThreadPool.execute(hedgehog);
-		coins.add(new Coin(200, 500));
+//		Hedgehog hedgehog = new Hedgehog(400,480, +1);
+//		enemies.add(hedgehog);
+//		ThreadPool.execute(hedgehog);
+//		coins.add(new Coin(200, 500));
 
-		coins.add(new Coin(150, 500));
-		coins.add(new Coin(250, 500));
+//		coins.add(new Coin(150, 500));
+//		coins.add(new Coin(250, 500));
 
-		player = new Player(300,500,30,30);
+//		player = new Player(300,500,30,30);
 		gravity = new Gravity();
 		gravity.walls = walls;
 		gravity.player = player;
@@ -86,7 +98,40 @@ public class GameState {
 		keyHandler = new KeyHandler();
 		mouseHandler = new MouseHandler();
 	}
-	
+
+	/**
+	 * The method which initalize objects in map
+	 */
+	public void initObjects() throws FileNotFoundException {
+		Scanner scanner = new Scanner(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\map.txt"));
+		while(scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			map.add(line);
+		}
+		for(int i = 0 ; i < 20 ; i ++) {
+			for(int j = 0 ; j < 10 ; j ++ ) {
+				switch (map.get(j).charAt(i)) {
+					case 'm':
+						player = new Player(i * boxW, j * boxH, boxW, boxH);
+						break;
+					case 's':
+						walls.add(new StoneWall(i * boxW, j * boxH, boxW, boxH));
+						break;
+					case 'b':
+						walls.add((new BrickWall(i * boxW, j * boxH, boxW, boxH)));
+						break;
+					case 'c':
+						coins.add(new Coin(i * boxW, j * boxH, boxW, boxH));
+						break;
+					case 'H':
+						Hedgehog hedgehog = new Hedgehog(i * boxW,j * boxH, boxW, boxH, +1);
+						enemies.add(hedgehog);
+						ThreadPool.execute(hedgehog);
+						break;
+				}
+			}
+		}
+	}
 	/**
 	 * The method which updates the game state.
 	 */
@@ -97,25 +142,25 @@ public class GameState {
 		}
 		if (keyLEFT) {
 			player.direction = -1;
-			player.setLocationX(player.getLocationX() - 5);
+			player.setLocationX(player.getLocationX() - boxW / 5);
 			boolean flag = true;
 			for(Wall wall : walls){
 				if(!wall.checkMove(player))
 					flag = false;
 			}
 			if(!flag)
-				player.setLocationX(player.getLocationX() + 5);
+				player.setLocationX(player.getLocationX() + boxW / 5);
 		}
 		if (keyRIGHT) {
 			player.direction = 1;
-			player.setLocationX(player.getLocationX() + 5);
+			player.setLocationX(player.getLocationX() + boxW / 5);
 			boolean flag = true;
 			for(Wall wall : walls){
 				if(!wall.checkMove(player))
 					flag = false;
 			}
 			if(!flag)
-				player.setLocationX(player.getLocationX() - 5);
+				player.setLocationX(player.getLocationX() - boxW / 5);
 		}
 		checkLiveWalls();
 		checkCoins();
@@ -218,11 +263,11 @@ public class GameState {
 						 break;
 					if (player.jump) {
 						lastJump = System.currentTimeMillis();
-						for (int i = 0; i < 25; i++) {
+						for (int i = 0; i < 15; i++) {
 
 							if(!canJump())
 								break;
-							player.setLocationY(player.getLocationY() - 5);
+							player.setLocationY(player.getLocationY() - boxH / 5);
 							try {
 								Thread.sleep(5);
 							} catch (InterruptedException ex) {

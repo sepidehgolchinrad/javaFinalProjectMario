@@ -9,7 +9,6 @@ public class StoneWall extends Wall {
     public boolean checkBelow(GameObject object) {
         if(object.getLocationY() == getLocationY() + getHeight())
         {
-            System.out.println("hello");
             return object.getLocationX() + object.getWidth() >= getLocationX() && object.getLocationX() <= getLocationX() + getWidth();
         }
         return false;

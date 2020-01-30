@@ -1,8 +1,8 @@
 package game.sample.ball.objects;
 
 public class Coin extends GameObject {
-    public Coin(int locationX, int locationY) {
-        super(locationX, locationY, 30, 30);
+    public Coin(int locationX, int locationY, int width, int height) {
+        super(locationX, locationY, width, height);
     }
     public boolean checkMove(GameObject object) {
         if(object.getLocationY() >= getLocationY() + getHeight() || object.getLocationY() + object.getHeight() <= getLocationY()) {

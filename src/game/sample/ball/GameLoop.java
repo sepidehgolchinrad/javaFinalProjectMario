@@ -1,6 +1,8 @@
 /*** In The Name of Allah ***/
 package game.sample.ball;
 
+import java.io.FileNotFoundException;
+
 /**
  * A very simple structure for the main game loop.
  * THIS IS NOT PERFECT, but works for most situations.
@@ -33,7 +35,7 @@ public class GameLoop implements Runnable {
 	/**
 	 * This must be called before the game loop starts.
 	 */
-	public void init() {
+	public void init() throws FileNotFoundException {
 		state = new GameState();
 		canvas.addKeyListener(state.getKeyListener());
 		canvas.addMouseListener(state.getMouseListener());
