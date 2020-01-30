@@ -90,7 +90,9 @@ public class GameState {
 	 * The method which initalize objects in map
 	 */
 	public void initObjects() throws FileNotFoundException {
-		Scanner scanner = new Scanner(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\map.txt"));
+
+		//Scanner scanner = new Scanner(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\map.txt"));
+		Scanner scanner = new Scanner(new File("src/icons/map.txt"));
 		while(scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			map.add(line);
