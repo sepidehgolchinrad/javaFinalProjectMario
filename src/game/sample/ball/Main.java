@@ -25,7 +25,7 @@ public class Main {
 			public void run() {
 				GameFrame frame = new GameFrame("Simple Ball !");
 				frame.setLocationRelativeTo(null); // put frame at center of screen
-				ImageIcon icon = new ImageIcon("/Users/sepidehgolchin/Desktop/FinalProject/src/game/sample/ball/Paper-Mario-icon.png");
+				ImageIcon icon = new ImageIcon("/src/game/sample/ball/Paper-Mario-icon.png");
 				JLabel label = new JLabel(icon);
 				frame.add(label);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

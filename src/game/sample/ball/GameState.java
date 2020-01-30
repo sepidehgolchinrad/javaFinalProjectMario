@@ -1,6 +1,10 @@
 /*** In The Name of Allah ***/
 package game.sample.ball;
 
+import game.sample.ball.objects.*;
+import game.sample.ball.objects.enemy.Enemy;
+import game.sample.ball.objects.enemy.Hedgehog;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -8,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -20,6 +24,10 @@ public class GameState {
 	
 	public int locX, locY, diam;
 	public boolean gameOver;
+	public ArrayList<Wall> walls;
+	public ArrayList<Coin> coins;
+	public ArrayList<Bullet> bullets;
+	public ArrayList<Enemy> enemies;
 	boolean jumpFlag;
 
 	private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
@@ -27,11 +35,43 @@ public class GameState {
 	private int mouseX, mouseY;	
 	private KeyHandler keyHandler;
 	private MouseHandler mouseHandler;
-	
+	private ArrayList<GameObject> gameObjects;
+	private Player player;
+	private Gravity gravity;
+	private long lastJump;
+
+	public Player getPlayer() {
+		return player;
+	}
+
 	public GameState() {
-		locX = 300;
-		locY = 500;
-		diam = 32;
+		gameObjects = new ArrayList<GameObject>();
+		walls = new ArrayList<Wall>();
+		coins = new ArrayList<Coin>();
+		bullets = new ArrayList<Bullet>();
+		enemies = new ArrayList<Enemy>();
+
+		walls.add(new StoneWall(0,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH-500,190));
+		walls.add(new StoneWall(GameFrame.GAME_WIDTH-400,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH,190));
+		walls.add((new StoneWall(400,500,100,50)));
+		walls.add((new BrickWall(450,440,100,30)));
+
+
+
+		Hedgehog hedgehog = new Hedgehog(400,480, +1);
+		enemies.add(hedgehog);
+		ThreadPool.execute(hedgehog);
+		coins.add(new Coin(200, 500));
+
+		coins.add(new Coin(150, 500));
+		coins.add(new Coin(250, 500));
+
+		player = new Player(300,500,30,30);
+		gravity = new Gravity();
+		gravity.walls = walls;
+		gravity.player = player;
+		gravity.enemies = enemies;
+		ThreadPool.execute(gravity);
 		gameOver = false;
 		//
 		keyUP = false;
@@ -55,41 +95,81 @@ public class GameState {
 			locY = mouseY - diam / 2;
 			locX = mouseX - diam / 2;
 		}
-		if (keyUP) {
-//			locY -= 20;
-//			TimeUnit.SECONDS.sleep(1);
-//			for (int i=0; i<5;i++){
-//				locY -=5;
-//			}
-
-//			TimeUnit.SECONDS.sleep(1);
-
-//			for (int i=0; i<5;i++){
-//				locY +=5;
-//			}
-//			TimeUnit.SECONDS.sleep(1);
-
-//			for(int i=0; i<90; i++){
-//				locY++;
-//				TimeUnit.SECONDS.sleep(1);
-//			}
-			//locY += 100;
-
+		if (keyLEFT) {
+			player.direction = -1;
+			player.setLocationX(player.getLocationX() - 5);
+			boolean flag = true;
+			for(Wall wall : walls){
+				if(!wall.checkMove(player))
+					flag = false;
+			}
+			if(!flag)
+				player.setLocationX(player.getLocationX() + 5);
 		}
-		//if (keyDOWN)
-		//	locY += 8;
-		if (keyLEFT)
-			locX -= 8;
-		if (keyRIGHT)
-			locX += 8;
-
-
+		if (keyRIGHT) {
+			player.direction = 1;
+			player.setLocationX(player.getLocationX() + 5);
+			boolean flag = true;
+			for(Wall wall : walls){
+				if(!wall.checkMove(player))
+					flag = false;
+			}
+			if(!flag)
+				player.setLocationX(player.getLocationX() - 5);
+		}
+		checkLiveWalls();
+		checkCoins();
+		checkBullets();
+		removeDeadBullets();
+		//TODO
+        player.setLocationX(Math.max(player.getLocationX(), 0));
+        player.setLocationY(Math.max(player.getLocationY(), 0));
+        if(player.getLocationY() >= GameFrame.GAME_HEIGHT){
+			System.out.println("fall");
+        	player.fall();
+		}
 		locX = Math.max(locX, 0);
 		locX = Math.min(locX, GameFrame.GAME_WIDTH - diam);
 		locY = Math.max(locY, 0);
 		locY = Math.min(locY, GameFrame.GAME_HEIGHT - diam);
 	}
-	
+	private void checkLiveWalls() {
+		for (int i = walls.size() - 1; i >= 0; i--) {
+		    Wall wall = walls.get(i);
+			if (wall.getClass() == BrickWall.class) {
+				if (!(((BrickWall) wall).isAlive())) {
+					walls.remove(i);
+				}
+			}
+		}
+	}
+	private void checkCoins() {
+		for (int i = coins.size() - 1; i>=0 ;i--)
+		{
+			Coin coin = coins.get(i);
+			if(!coin.checkMove(player)){
+				player.coins++;
+				coins.remove(coin);
+			}
+		}
+	}
+	private void addBullet() {
+	    if(player.bullets == 0)
+	    	return;
+	    player.bullets--;
+	    Bullet bullet = new Bullet(player.getLocationX(), player.getLocationY() , player.direction);
+	    bullets.add(bullet);
+	    ThreadPool.execute(bullet);
+
+	}
+	private void removeDeadBullets() {
+		for(int i=bullets.size()-1 ;i>=0 ;i--){
+			Bullet bullet = bullets.get(i);
+			if(!bullet.getAlive())
+				bullets.remove(bullet);
+		}
+	}
+
 	
 	public KeyListener getKeyListener() {
 		return keyHandler;
@@ -99,6 +179,25 @@ public class GameState {
 	}
 	public MouseMotionListener getMouseMotionListener() {
 		return mouseHandler;
+	}
+	private boolean canJump(){
+		for(Wall wall:walls){
+			if(wall.checkBelow(player))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	private void checkBullets(){
+		for(int i=bullets.size()-1;i>=0;i--){
+			Bullet bullet = bullets.get(i);
+			for(Wall wall:walls){
+				if(!wall.checkMove(bullet)){
+				    bullets.remove(bullet);
+				}
+			}
+		}
 	}
 
 
@@ -112,45 +211,47 @@ public class GameState {
 		public void keyPressed(KeyEvent e) {
 			switch (e.getKeyCode())
 			{
-				case KeyEvent.VK_W:
+				case KeyEvent.VK_UP:
 					keyUP = true;
-					jumpFlag = true;
-					if (jumpFlag) {
-						jumpFlag = false;
-						for (int i = 0; i < 20; i++) {
-							locY -= 5;
+					player.jump = true;
+					if(System.currentTimeMillis() - lastJump <= 300)
+						 break;
+					if (player.jump) {
+						lastJump = System.currentTimeMillis();
+						for (int i = 0; i < 25; i++) {
+
+							if(!canJump())
+								break;
+							player.setLocationY(player.getLocationY() - 5);
 							try {
 								Thread.sleep(5);
 							} catch (InterruptedException ex) {
 								ex.printStackTrace();
 							}
 						}
+						keyUP = false;
+						player.jump = false;
 						try {
-							Thread.sleep(100);
+							Thread.sleep(5 * 30);
 						} catch (InterruptedException ex) {
 							ex.printStackTrace();
-						}
-						for (int i = 0; i < 20; i++) {
-							locY += 5;
-							try {
-								Thread.sleep(5);
-							} catch (InterruptedException ex) {
-								ex.printStackTrace();
-							}
 						}
 					}
 					break;
 				case KeyEvent.VK_DOWN:
 					keyDOWN = true;
 					break;
-				case KeyEvent.VK_A:
+				case KeyEvent.VK_LEFT:
 					keyLEFT = true;
 					break;
-				case KeyEvent.VK_D:
+				case KeyEvent.VK_RIGHT:
 					keyRIGHT = true;
 					break;
 				case KeyEvent.VK_ESCAPE:
 					gameOver = true;
+					break;
+				case KeyEvent.VK_SPACE:
+					addBullet();
 					break;
 			}
 		}
@@ -159,22 +260,24 @@ public class GameState {
 		public void keyReleased(KeyEvent e) {
 			switch (e.getKeyCode())
 			{
-				case KeyEvent.VK_W:
-					keyUP = false;
+				case KeyEvent.VK_UP:
+					//keyUP = false;
+					//player.jump = false;
 					break;
 				case KeyEvent.VK_DOWN:
 					keyDOWN = false;
 					break;
-				case KeyEvent.VK_A:
+				case KeyEvent.VK_LEFT:
 					keyLEFT = false;
 					break;
-				case KeyEvent.VK_D:
+				case KeyEvent.VK_RIGHT:
 					keyRIGHT = false;
 					break;
 			}
 		}
 
 	}
+
 
 	/**
 	 * The mouse handler.

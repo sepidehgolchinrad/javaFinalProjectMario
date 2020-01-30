@@ -1,6 +1,11 @@
 /*** In The Name of Allah ***/
 package game.sample.ball;
 
+import game.sample.ball.objects.Bullet;
+import game.sample.ball.objects.Coin;
+import game.sample.ball.objects.Wall;
+import game.sample.ball.objects.enemy.Enemy;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -103,7 +108,8 @@ public class GameFrame extends JFrame {
 		g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 		// Draw ball
 		g2d.setColor(Color.RED);
-		g2d.fillOval(state.locX, state.locY, state.diam, state.diam);
+		//g2d.fillOval(state.locX, state.locY, state.diam, state.diam);
+        paintObjects(g2d, state);
 
 	//	g2d.(image,state.locX,state.locY,null);
 
@@ -144,6 +150,22 @@ public class GameFrame extends JFrame {
 			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(64.0f));
 			int strWidth = g2d.getFontMetrics().stringWidth(str);
 			g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, GAME_HEIGHT / 2);
+		}
+	}
+	private void paintObjects(Graphics2D g2d, GameState state){
+
+		state.getPlayer().paintComponent(g2d);
+		for (Wall wall:state.walls) {
+		    wall.paintComponent(g2d);
+		}
+		for (Coin coin:state.coins) {
+			coin.paintComponent(g2d);
+		}
+		for (Bullet bullet:state.bullets) {
+			bullet.paintComponent(g2d);
+		}
+		for (Enemy enemy:state.enemies) {
+			enemy.paintComponent(g2d);
 		}
 	}
 
