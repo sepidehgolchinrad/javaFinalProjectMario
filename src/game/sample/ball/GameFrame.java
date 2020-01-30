@@ -151,6 +151,13 @@ public class GameFrame extends JFrame {
 			int strWidth = g2d.getFontMetrics().stringWidth(str);
 			g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, GAME_HEIGHT / 2);
 		}
+		if (state.gameOver) {
+			String str = "GAME‌ OVER";
+			g2d.setColor(Color.RED);
+			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(64.0f));
+			int strWidth = g2d.getFontMetrics().stringWidth(str);
+			g2d.drawString(str, (GAME_WIDTH - strWidth) / 2, GAME_HEIGHT / 2);
+		}
 	}
 	private void paintObjects(Graphics2D g2d, GameState state){
 
