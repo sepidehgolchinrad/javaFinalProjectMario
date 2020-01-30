@@ -13,7 +13,7 @@ public class BrickWall extends Wall {
     public BrickWall(int locationX, int locationY, int width, int height) {
         super(locationX, locationY, width, height);
         try {
-            image = ImageIO.read(new File("src/icons/Super Mario/Brick Block.png"));
+            image = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Brick Block.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,7 +27,7 @@ public class BrickWall extends Wall {
 
     @Override
     public boolean checkBelow(GameObject object) {
-        if(object.getLocationY() == getLocationY() + getHeight())
+        if(object.getLocationY() <= getLocationY() + getHeight() && object.getLocationY() >= getLocationY())
         {
             if(object.getLocationX() + object.getWidth() >= getLocationX() && object.getLocationX() <= getLocationX() + getWidth())
             {

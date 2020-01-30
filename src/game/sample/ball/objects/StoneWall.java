@@ -11,7 +11,7 @@ public class StoneWall extends Wall {
     public StoneWall(int locationX, int locationY, int width, int height) {
         super(locationX, locationY, width, height);
         try {
-            image = ImageIO.read(new File("src/icons/Super Mario/Hard Block.png"));
+            image = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Hard Block.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,10 +24,8 @@ public class StoneWall extends Wall {
     }
     @Override
     public boolean checkBelow(GameObject object) {
-        if(object.getLocationY() + object.getHeight() == getLocationY())
+        if(object.getLocationY() <= getLocationY() + getHeight() && object.getLocationY() >= getLocationY())
         {
-            System.out.println("object : " + object.getLocationX() + " " + object.getLocationY() + " " + object.getWidth() + " " + object.getHeight());
-            System.out.println("stone: " + getLocationX() + " " + getLocationY() + " " + getWidth() + " " + getHeight());
             return object.getLocationX() + object.getWidth() >= getLocationX() && object.getLocationX() <= getLocationX() + getWidth();
         }
         return false;

@@ -38,7 +38,7 @@ public class Gravity implements Runnable {
                 flag = true;
         }
         if(!flag) {
-            enemy.setLocationY(enemy.getLocationY() + 5);
+            enemy.setLocationY(enemy.getLocationY() + enemy.getHeight() / 5);
         }
     }
     private void playerMove(){
@@ -50,7 +50,7 @@ public class Gravity implements Runnable {
                 flag = true;
         }
         if (!flag) {
-            player.setLocationY(player.getLocationY() + 5);
+            player.setLocationY(player.getLocationY() + player.getHeight() / 5);
         }
         else {
             player.setLastPosX(player.getLocationX());

@@ -5,7 +5,7 @@ public abstract class Wall extends GameObject {
         super(locationX, locationY, width, height);
     }
     public boolean checkAbove(GameObject object){
-        if(object.getLocationY() + object.getHeight() == getLocationY())
+        if(object.getLocationY() + object.getHeight() >= getLocationY() && object.getLocationY() + object.getHeight() <= getLocationY() + getHeight())
         {
             return object.getLocationX() + object.getWidth() >= getLocationX() && object.getLocationX() <= getLocationX() + getWidth();
         }

@@ -19,8 +19,8 @@ public class Hedgehog extends Enemy implements Runnable{
         this.height = height;
         this.direction = direction;
         try {
-            rightImage = ImageIO.read(new File("src/icons/Super Mario/Beetle Right.gif"));
-            leftImage = ImageIO.read(new File("src/icons/Super Mario/Beetle Left.gif"));
+            rightImage = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Beetle Right.gif"));
+            leftImage = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Beetle Left.gif"));
         } catch (IOException e) {
             e.printStackTrace();
         }

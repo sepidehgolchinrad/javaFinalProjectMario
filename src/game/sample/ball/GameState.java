@@ -134,8 +134,9 @@ public class GameState {
 			player.setLocationX(player.getLocationX() - boxW / 5);
 			boolean flag = true;
 			for(Wall wall : walls){
-				if(!wall.checkMove(player))
+				if(!wall.checkMove(player)) {
 					flag = false;
+				}
 			}
 			if(!flag)
 				player.setLocationX(player.getLocationX() + boxW / 5);
@@ -212,7 +213,7 @@ public class GameState {
 		    Wall wall = walls.get(i);
 			if (wall.getClass() == BrickWall.class) {
 				if (!(((BrickWall) wall).isAlive())) {
-					walls.remove(i);
+					walls.remove(wall);
 				}
 			}
 		}
@@ -302,7 +303,7 @@ public class GameState {
 						 break;
 					if (player.jump) {
 						lastJump = System.currentTimeMillis();
-						for (int i = 0; i < 15; i++) {
+						for (int i = 0; i < 20; i++) {
 
 							if(!canJump())
 								break;
@@ -316,7 +317,7 @@ public class GameState {
 						keyUP = false;
 						player.jump = false;
 						try {
-							Thread.sleep(5 * 30);
+							Thread.sleep(5 * 40);
 						} catch (InterruptedException ex) {
 							ex.printStackTrace();
 						}
