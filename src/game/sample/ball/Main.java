@@ -4,6 +4,7 @@ package game.sample.ball;
 import game.template.bufferstrategy.Enemy;
 
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
 import javax.swing.*;
 
 /**
@@ -34,7 +35,11 @@ public class Main {
 				frame.initBufferStrategy();
 				// Create and execute the game-loop
 				GameLoop game = new GameLoop(frame);
-				game.init();
+				try {
+					game.init();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 				ThreadPool.execute(game);
 
 				// and the game starts ...

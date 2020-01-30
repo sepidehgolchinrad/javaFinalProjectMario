@@ -63,7 +63,7 @@ public class Player extends GameObject {
     }
     public void fall(){
         this.lives--;
-        this.setLocationX(this.lastPosX-15);
+        this.setLocationX(this.lastPosX);
         this.setLocationY(this.lastPosY);
     }
 }
