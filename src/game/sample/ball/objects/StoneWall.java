@@ -11,7 +11,9 @@ public class StoneWall extends Wall {
     public StoneWall(int locationX, int locationY, int width, int height) {
         super(locationX, locationY, width, height);
         try {
-            image = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Hard Block.png"));
+
+            //image = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Hard Block.png"));
+            image = ImageIO.read(new File("src/icons/Super Mario/Hard Block.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

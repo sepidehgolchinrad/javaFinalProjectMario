@@ -35,8 +35,12 @@ public class Player extends GameObject {
         bullets = 10;
         try {
 
-            imageRight = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Small Mario Right.png"));
-            imageLeft = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Small Mario Left.png"));
+
+            //imageRight = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Small Mario Right.png"));
+            imageRight = ImageIO.read(new File("src/icons/Super Mario/Small Mario Right.png"));
+
+            //imageLeft = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Small Mario Left.png"));
+            imageLeft = ImageIO.read(new File("src/icons/Super Mario/Small Mario Left.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
