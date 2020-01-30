@@ -123,6 +123,8 @@ public class GameState {
 	 * The method which updates the game state.
 	 */
 	public void update() throws InterruptedException {
+		if(player.lives <= 0)
+			gameOver = true;
 		if (mousePress) {
 			locY = mouseY - diam / 2;
 			locX = mouseX - diam / 2;
@@ -258,7 +260,10 @@ public class GameState {
 			{
 				if(wall.getClass() == BrickWall.class)
 				{
-
+					BrickWall brickWall = (BrickWall)wall;
+					int reward = brickWall.getReward();
+					if(reward == 1)
+						player.coins++;
 				}
 
 				return false;
