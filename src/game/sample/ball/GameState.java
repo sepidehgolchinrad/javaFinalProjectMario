@@ -21,7 +21,8 @@ import java.util.ArrayList;
  * @author Seyed Mohammad Ghaffarian
  */
 public class GameState {
-	
+
+    public static boolean pause;
 	public int locX, locY, diam;
 	public boolean gameOver;
 	public ArrayList<Wall> walls;
@@ -184,6 +185,11 @@ public class GameState {
 		for(Wall wall:walls){
 			if(wall.checkBelow(player))
 			{
+				if(wall.getClass() == BrickWall.class)
+				{
+
+				}
+
 				return false;
 			}
 		}
@@ -212,6 +218,8 @@ public class GameState {
 			switch (e.getKeyCode())
 			{
 				case KeyEvent.VK_UP:
+					if(pause)
+						break;
 					keyUP = true;
 					player.jump = true;
 					if(System.currentTimeMillis() - lastJump <= 300)
@@ -239,18 +247,28 @@ public class GameState {
 					}
 					break;
 				case KeyEvent.VK_DOWN:
+					if(pause)
+						break;
 					keyDOWN = true;
 					break;
 				case KeyEvent.VK_LEFT:
+					if(pause)
+						break;
 					keyLEFT = true;
 					break;
 				case KeyEvent.VK_RIGHT:
+					if(pause)
+						break;
 					keyRIGHT = true;
 					break;
 				case KeyEvent.VK_ESCAPE:
-					gameOver = true;
+					pause = !pause;
+					System.out.println(pause);
+					//gameOver = true;
 					break;
 				case KeyEvent.VK_SPACE:
+				    if(pause)
+				    	break;
 					addBullet();
 					break;
 			}

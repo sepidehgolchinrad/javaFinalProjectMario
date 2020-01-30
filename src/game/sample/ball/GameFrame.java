@@ -144,8 +144,8 @@ public class GameFrame extends JFrame {
 		g2d.setFont(g2d.getFont().deriveFont(18.0f));
 		g2d.drawString(userGuide, 10, GAME_HEIGHT - 10);
 		// Draw GAME OVER
-		if (state.gameOver) {
-			String str = "GAME OVER";
+		if (state.pause) {
+			String str = "PAUSE";
 			g2d.setColor(Color.WHITE);
 			g2d.setFont(g2d.getFont().deriveFont(Font.BOLD).deriveFont(64.0f));
 			int strWidth = g2d.getFontMetrics().stringWidth(str);

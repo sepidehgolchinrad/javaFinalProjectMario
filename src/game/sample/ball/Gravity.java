@@ -15,6 +15,10 @@ public class Gravity implements Runnable {
     @Override
     public void run() {
         while(true) {
+            if(GameState.pause) {
+                System.out.println("");
+                continue;
+            }
             try {
                 Thread.sleep(5);
                 playerMove();

@@ -1,5 +1,7 @@
 package game.sample.ball.objects;
 
+import game.sample.ball.GameState;
+
 public class Bullet extends GameObject implements Runnable {
     private int direction;
     private boolean alive;
@@ -11,6 +13,11 @@ public class Bullet extends GameObject implements Runnable {
     public void run() {
         alive = true;
         for(int i=0;i<100;i++){
+            if(GameState.pause) {
+                i--;
+                System.out.println("");
+                continue;
+            }
             try {
                 this.setLocationX(this.getLocationX() + 5 * direction);
                 Thread.sleep(10);

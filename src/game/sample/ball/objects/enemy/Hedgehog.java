@@ -1,5 +1,7 @@
 package game.sample.ball.objects.enemy;
 
+import game.sample.ball.GameState;
+
 import java.awt.*;
 
 public class Hedgehog extends Enemy implements Runnable{
@@ -12,6 +14,10 @@ public class Hedgehog extends Enemy implements Runnable{
     @Override
     public void run() {
        while(true){
+           if(GameState.pause) {
+               System.out.println("");
+               continue;
+           }
            if(!getAlive()){
                return;
            }
