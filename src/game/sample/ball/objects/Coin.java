@@ -9,8 +9,8 @@ import java.io.IOException;
 public class Coin extends GameObject {
 
     private BufferedImage image;
-    public Coin(int locationX, int locationY) {
-        super(locationX, locationY, 30, 30);
+    public Coin(int locationX, int locationY,int width, int height) {
+        super(locationX, locationY, width, height);
         try {
             image = ImageIO.read(new File("src/icons/Super Mario/Coin.gif"));
         } catch (IOException e) {
@@ -29,6 +29,6 @@ public class Coin extends GameObject {
         super.paint(g);
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(image,getLocationX(), getLocationY(), 30, 30, null);
+        g2d.drawImage(image,getLocationX(), getLocationY(), getWidth(), getHeight(), null);
     }
 }
