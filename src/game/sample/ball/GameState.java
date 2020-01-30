@@ -91,8 +91,8 @@ public class GameState {
 	 */
 	public void initObjects() throws FileNotFoundException {
 
-		//Scanner scanner = new Scanner(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\map.txt"));
-		Scanner scanner = new Scanner(new File("src/icons/map.txt"));
+		Scanner scanner = new Scanner(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\map.txt"));
+//		Scanner scanner = new Scanner(new File("src/icons/map.txt"));
 		while(scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			map.add(line);
@@ -234,7 +234,7 @@ public class GameState {
 	    if(player.bullets == 0)
 	    	return;
 	    player.bullets--;
-	    Bullet bullet = new Bullet(player.getLocationX(), player.getLocationY() , player.direction);
+	    Bullet bullet = new Bullet(player.getLocationX() + player.getWidth() / 2, player.getLocationY() + player.getHeight() / 2 - 10 , player.direction);
 	    bullets.add(bullet);
 	    ThreadPool.execute(bullet);
 
@@ -258,7 +258,10 @@ public class GameState {
 		return mouseHandler;
 	}
 	private boolean canJump(){
+		boolean onAbove = false;
 		for(Wall wall:walls){
+//			if(wall.checkAbove(player))
+				onAbove = true;
 			if(wall.checkBelow(player))
 			{
 				if(wall.getClass() == BrickWall.class)
@@ -271,7 +274,7 @@ public class GameState {
 				return false;
 			}
 		}
-		return true;
+		return onAbove;
 	}
 	private void checkBullets(){
 		for(int i=bullets.size()-1;i>=0;i--){
@@ -298,16 +301,18 @@ public class GameState {
 				case KeyEvent.VK_UP:
 					if(pause)
 						break;
-					keyUP = true;
-					player.jump = true;
-					if(System.currentTimeMillis() - lastJump <= 300)
+					if(System.currentTimeMillis() - lastJump <= 350)
 						 break;
+					else {
+						keyUP = true;
+						player.jump = true;
+					}
 					if (player.jump) {
 						lastJump = System.currentTimeMillis();
 						for (int i = 0; i < 20; i++) {
 							if(!canJump())
 								break;
-							System.out.println("boxh: " + boxH + " " + boxH / 5);
+							System.out.println(i + " : " + player.getLocationY() + " " + (boxH / 5));
 							player.setLocationY(player.getLocationY() - boxH / 5);
 							try {
 								Thread.sleep(5);
@@ -318,7 +323,7 @@ public class GameState {
 						keyUP = false;
 						player.jump = false;
 						try {
-							Thread.sleep(5 * 40);
+							Thread.sleep(5 * 30);
 						} catch (InterruptedException ex) {
 							ex.printStackTrace();
 						}

@@ -13,8 +13,8 @@ public class Coin extends GameObject {
         super(locationX, locationY, width, height);
         try {
 
-            //image = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Coin.gif"));
-            image = ImageIO.read(new File("src/icons/Super Mario/Coin.gif"));
+            image = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Coin.gif"));
+//            image = ImageIO.read(new File("src/icons/Super Mario/Coin.gif"));
         } catch (IOException e) {
             e.printStackTrace();
         }
