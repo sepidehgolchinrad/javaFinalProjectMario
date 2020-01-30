@@ -46,8 +46,9 @@ public class Gravity implements Runnable {
             return;
         boolean flag = false;
         for (Wall wall : walls) {
-            if (wall.checkAbove(player))
+            if (wall.checkAbove(player)) {
                 flag = true;
+            }
         }
         if (!flag) {
             player.setLocationY(player.getLocationY() + player.getHeight() / 5);

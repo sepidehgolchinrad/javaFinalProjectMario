@@ -266,7 +266,6 @@ public class GameState {
 					if(reward == 1)
 						player.coins++;
 				}
-
 				return false;
 			}
 		}
@@ -304,9 +303,9 @@ public class GameState {
 					if (player.jump) {
 						lastJump = System.currentTimeMillis();
 						for (int i = 0; i < 20; i++) {
-
 							if(!canJump())
 								break;
+							System.out.println("boxh: " + boxH + " " + boxH / 5);
 							player.setLocationY(player.getLocationY() - boxH / 5);
 							try {
 								Thread.sleep(5);
