@@ -12,6 +12,15 @@ public class Player extends GameObject {
     public int lives;
     public int bullets;
     public int direction;
+
+    public int getLastPosX() {
+        return lastPosX;
+    }
+
+    public int getLastPosY() {
+        return lastPosY;
+    }
+
     private int lastPosX;
     private int lastPosY;
 
@@ -26,8 +35,8 @@ public class Player extends GameObject {
         bullets = 10;
         try {
 
-            imageRight = ImageIO.read(new File("src/icons/Super Mario/Small Mario Right.png"));
-            imageLeft = ImageIO.read(new File("src/icons/Super Mario/Small Mario Left.png"));
+            imageRight = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Small Mario Right.png"));
+            imageLeft = ImageIO.read(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\Super Mario/Small Mario Left.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,10 +57,10 @@ public class Player extends GameObject {
         g2d.setColor(Color.RED);
         g2d.drawString(bulletsStr,  250, 100);
         if(direction == 1){
-            g2d.drawImage(imageRight,getLocationX(), getLocationY(), 50, 40, null);
+            g2d.drawImage(imageRight,getLocationX(), getLocationY(), getWidth(), getHeight(), null);
         }
         else
-            g2d.drawImage(imageLeft,getLocationX(), getLocationY(), 50, 40, null);
+            g2d.drawImage(imageLeft,getLocationX(), getLocationY(), getWidth(), getHeight(), null);
     }
 
     public void setLastPosX(int lastPosX) {

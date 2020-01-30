@@ -44,9 +44,10 @@ public class GameState {
 	private Player player;
 	private Gravity gravity;
 	private long lastJump;
-	private int mapColumn;
+	private int centerColumn;
 	private ArrayList<String>map;
 	private int boxH, boxW;
+	private int lastColumn;
 
 	public Player getPlayer() {
 		return player;
@@ -59,27 +60,12 @@ public class GameState {
 		bullets = new ArrayList<Bullet>();
 		enemies = new ArrayList<Enemy>();
 		map = new ArrayList<String>();
-		mapColumn = 10;
+		centerColumn = 10;
+		lastColumn = 20;
 		boxW = GameFrame.GAME_WIDTH / 20;
 		boxH = GameFrame.GAME_HEIGHT / 10;
 		initObjects();
 
-//		walls.add(new StoneWall(0,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH-500,190));
-//		walls.add(new StoneWall(GameFrame.GAME_WIDTH-400,GameFrame.GAME_HEIGHT-190,GameFrame.GAME_WIDTH,190));
-//		walls.add((new StoneWall(400,500,100,50)));
-//		walls.add((new BrickWall(450,440,100,30)));
-
-
-
-//		Hedgehog hedgehog = new Hedgehog(400,480, +1);
-//		enemies.add(hedgehog);
-//		ThreadPool.execute(hedgehog);
-//		coins.add(new Coin(200, 500));
-
-//		coins.add(new Coin(150, 500));
-//		coins.add(new Coin(250, 500));
-
-//		player = new Player(300,500,30,30);
 		gravity = new Gravity();
 		gravity.walls = walls;
 		gravity.player = player;
@@ -104,7 +90,7 @@ public class GameState {
 	 * The method which initalize objects in map
 	 */
 	public void initObjects() throws FileNotFoundException {
-		Scanner scanner = new Scanner(new File("src/icons/map.txt"));
+		Scanner scanner = new Scanner(new File("C:\\Users\\koosh\\Desktop\\java\\java\\supermario\\javaFinalProjectMario\\src\\icons\\map.txt"));
 		while(scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			map.add(line);
@@ -163,6 +149,7 @@ public class GameState {
 			if(!flag)
 				player.setLocationX(player.getLocationX() - boxW / 5);
 		}
+		updateObjects();
 		checkLiveWalls();
 		checkCoins();
 		checkBullets();
@@ -178,6 +165,45 @@ public class GameState {
 		locX = Math.min(locX, GameFrame.GAME_WIDTH - diam);
 		locY = Math.max(locY, 0);
 		locY = Math.min(locY, GameFrame.GAME_HEIGHT - diam);
+	}
+	private void updateObjects() {
+		if(player.getLocationX() > GameFrame.GAME_WIDTH / 2) {
+			centerColumn++;
+			for (Wall wall : walls) {
+				wall.setLocationX(wall.getLocationX() - boxW);
+			}
+			for (Enemy enemy : enemies) {
+				enemy.setLocationX(enemy.getLocationX() - boxW);
+			}
+			for (Coin coin : coins) {
+				coin.setLocationX(coin.getLocationX() - boxW);
+			}
+			player.setLocationX(player.getLocationX() - boxW);
+			player.setLastPosX(player.getLastPosX() - boxW);
+			int i = lastColumn;
+			for (int j = 0; j < map.size(); j++) {
+				switch (map.get(j).charAt(i)) {
+					case 'm':
+						player = new Player(i * boxW, j * boxH, boxW, boxH);
+						break;
+					case 's':
+						walls.add(new StoneWall(i * boxW, j * boxH, boxW, boxH));
+						break;
+					case 'b':
+						walls.add((new BrickWall(i * boxW, j * boxH, boxW, boxH)));
+						break;
+					case 'c':
+						coins.add(new Coin(i * boxW, j * boxH, boxW / 2, boxH / 2));
+						break;
+					case 'H':
+						Hedgehog hedgehog = new Hedgehog(i * boxW, j * boxH, boxW, boxH, +1);
+						enemies.add(hedgehog);
+						ThreadPool.execute(hedgehog);
+						break;
+				}
+			}
+			lastColumn++;
+		}
 	}
 	private void checkLiveWalls() {
 		for (int i = walls.size() - 1; i >= 0; i--) {
